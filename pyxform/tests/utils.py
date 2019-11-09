@@ -4,6 +4,7 @@ The tests utils module functionality.
 """
 import os
 import xml.etree.ElementTree as ETree
+import logging
 
 from formencode.doctest_xml_compare import xml_compare
 from unittest2 import TestCase
@@ -63,6 +64,10 @@ class XFormTestCase(TestCase):
     def assertXFormEqual(self, xform1, xform2):
         xform1 = ETree.fromstring(xform1.encode("utf-8"))
         xform2 = ETree.fromstring(xform2.encode("utf-8"))
+        
+        # Remove the odk:pyxform-version attribute from the primary instance child
+        self.remove_pyxform_version_attribute(xform1)
+        self.remove_pyxform_version_attribute(xform2)
 
         # Sort tags under <model> section in each form
         self.sort_model(xform1)
@@ -93,6 +98,15 @@ class XFormTestCase(TestCase):
             key = elem_get_tag
         elems[:] = sorted(elems, key=key)
 
+    def remove_pyxform_version_attribute(self, xform):
+        xforms_ns = "{http://www.w3.org/2002/xforms}"
+        odk_ns = "{http://www.opendatakit.org/xforms}"
+        primary_instance = xform.find(".//" + xforms_ns + "instance")
+
+        # Remove the pyxform-version attribute
+        if primary_instance is not None:
+            primary_instance[0].attrib.pop(odk_ns + "pyxform-version", False)
+            
     def sort_model(self, xform):
         ns = "{http://www.w3.org/2002/xforms}"
         model = xform.find(".//" + ns + "model")
