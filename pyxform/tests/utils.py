@@ -4,7 +4,6 @@ The tests utils module functionality.
 """
 import os
 import xml.etree.ElementTree as ETree
-import logging
 
 from formencode.doctest_xml_compare import xml_compare
 from unittest2 import TestCase
