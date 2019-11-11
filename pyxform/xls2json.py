@@ -1397,7 +1397,7 @@ def get_parameters(raw_parameters, allowed_parameters):
     return params
 
 def get_git_describe_tags():
-    return subprocess.check_output(['git', 'describe', '--tags', 'HEAD']).strip()[1:]
+    return subprocess.check_output(['git', 'describe', '--tags', 'HEAD'], encoding="utf-8").strip()[1:]
 
 class SpreadsheetReader(object):
     def __init__(self, path_or_file):
