@@ -104,7 +104,7 @@ class XFormTestCase(TestCase):
 
         # Remove the pyxform-version attribute
         if primary_instance is not None:
-            primary_instance[0].attrib.pop(odk_ns + "pyxform-version", False)
+            primary_instance[0].attrib.pop(odk_ns + "pyxform-version", None)
             
     def sort_model(self, xform):
         ns = "{http://www.w3.org/2002/xforms}"
